@@ -1,7 +1,7 @@
 """
 Code ideas from https://github.com/Newmu/dcgan and tensorflow mnist dataset reader
 """
-from past.builtins import xrange
+# from past.builtins import xrange
 import numpy as np
 import scipy.misc as misc
 import pandas as pa
@@ -125,8 +125,8 @@ class class_dataset_reader:
         nr_y = image.shape[0] // self.tile_size[0]
         nr_x = image.shape[1] // self.tile_size[1]
 
-        for x_i in xrange(0, nr_x):
-            for y_i in xrange(0, nr_y):
+        for x_i in range(0, nr_x):
+            for y_i in range(0, nr_y):
                 self.images.append(image[y_i*self.tile_size[0]:(y_i+1)*self.tile_size[0], x_i*self.tile_size[1]:(x_i+1)*self.tile_size[1]])
                 self.annotations.append(class_index)
                 # if self.images[len(self.images)-1].shape != (self.tile_size[0],self.tile_size[1]):

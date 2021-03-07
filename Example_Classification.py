@@ -135,7 +135,7 @@ def main(unused_argv):
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--data_dir', type=str,
-                      default='/Users/tugg/Documents/DeepScores_datasets_old/DeepScores2017_classification',
+                      default='./deep_scores_dense/deep_scores_dense/images_png',
                       help='Directory for storing input data')
   parser.add_argument("--batch_size", type=int, default=2, help="batch size for training")
   parser.add_argument("--test_batch_size", type=int, default=200, help="batch size for training")

@@ -2,7 +2,8 @@
 Code ideas from https://github.com/Newmu/dcgan and tensorflow mnist dataset reader
 """
 import numpy as np
-import scipy.misc as misc
+#import scipy.misc as misc
+from PIL import Image
 import os
 import glob
 from random import shuffle, randint
@@ -86,26 +87,31 @@ class seg_dataset_reader:
 
 
     def _transform(self, filename):
-        image = misc.imread(filename)
-        annotation = misc.imread(filename.replace("/images_png/", "/pix_annotations_png/"))
+        image = Image.open(filename)
+        print(image)
+        annotation = Image.open(filename.replace("/images_png/", "/pix_annotations_png/"))
         print("im working!" + str(randint(0,10)))
-        if not image.shape[0:2] == annotation.shape[0:2]:
+        if not image.size[0:1] == annotation.size[0:1]:
             print("input and annotation have different sizes!")
             import sys
             import pdb
             pdb.set_trace()
             sys.exit(1)
 
-        if image.shape[-1] != 1:
+        if image.size[-1] != 1:
             # take mean over color channels, image BW anyways --> fix in dataset creation
             image = np.mean(image, -1)
+            print(image)
 
         if self.crop:
-            coord_0 = randint(0, (image.shape[0] - self.crop_size[0]))
-            coord_1 = randint(0, (image.shape[1] - self.crop_size[1]))
-
-            image = image[coord_0:(coord_0+self.crop_size[0]),coord_1:(coord_1+self.crop_size[1])]
-            annotation = annotation[coord_0:(coord_0 + self.crop_size[0]), coord_1:(coord_1 + self.crop_size[1])]
+            width, height = image.shape
+            print(width, height)
+            coord_0 = randint(0, (width - self.crop_size[0]))
+            coord_1 = randint(0, (height - self.crop_size[1]))
+            image = image.crop((coord_0+self.crop_size[0]), (coord_1+self.crop_size[1]), width, height)
+            # image = image[coord_0:(coord_0+self.crop_size[0]),coord_1:(coord_1+self.crop_size[1])]
+            print(image)
+            annotation = annotation.crop((coord_0+self.crop_size[0]), (coord_1+self.crop_size[1]), width, height)
 
         return [image, annotation]
 
